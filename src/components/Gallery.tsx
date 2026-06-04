@@ -11,21 +11,10 @@ const cells = [
   { type: 'image', label: 'Azure Bay', span: 'col-span-1', bg: 'from-teal-950 to-cyan-950' },
 ]
 
-const containerVariants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.07 } },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, scale: 0.97 },
-  show: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeOut' as const } },
-}
-
 export default function Gallery() {
   return (
     <section id="experience" className="bg-[#050505] py-20">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Header */}
         <div className="flex items-end justify-between mb-10">
           <div>
             <p className="text-white/30 text-xs tracking-[0.3em] uppercase mb-3">Visual Gallery</p>
@@ -40,24 +29,17 @@ export default function Gallery() {
           </button>
         </div>
 
-        {/* Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-100px' }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-2 auto-rows-[200px]"
-        >
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 auto-rows-[200px]">
           {cells.map((cell, i) => (
             <motion.div
               key={i}
-              variants={itemVariants}
+              initial={{ opacity: 0, scale: 0.97 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.5, delay: i * 0.07, ease: 'easeOut' }}
               className={`relative overflow-hidden rounded-sm bg-gradient-to-br ${cell.bg} ${cell.span} group cursor-pointer`}
             >
-              {/* Overlay */}
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
-
-              {/* Grid texture */}
               <div
                 className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity duration-300"
                 style={{
@@ -66,8 +48,6 @@ export default function Gallery() {
                   backgroundSize: '30px 30px',
                 }}
               />
-
-              {/* Play icon for videos */}
               {cell.type === 'video' && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-10 h-10 rounded-full border border-white/40 flex items-center justify-center group-hover:border-white/70 group-hover:bg-white/10 transition-all duration-300">
@@ -75,14 +55,12 @@ export default function Gallery() {
                   </div>
                 </div>
               )}
-
-              {/* Label */}
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
                 <p className="text-white/80 text-xs tracking-wider uppercase">{cell.label}</p>
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )
